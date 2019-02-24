@@ -1,65 +1,53 @@
 package com.pig.page;
 
+import com.pig.Utils.Utils;
+import com.pig.helper.Helper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
-    @FindBy(id="xxx")
-    private WebElement name;
-
-    @FindBy(id="email")
+    @FindBy(id="inputEmail3")
     private WebElement email;
 
-    @FindBy(id="xxx")
+    @FindBy(id="inputPassword")
     private WebElement pass;
 
-    @FindBy(id="xxx")
-    private WebElement passRepeat;
+    // lay ra the div cua khung message
+    @FindBy(id="message")
+    private WebElement message;
 
-    @FindBy(id="xxx")
-    private WebElement address;
-
-    @FindBy(id="xxx")
-    private WebElement phone;
+    // lay ra the button login cua khung message
+    @FindBy(id="login")
+    private WebElement loginButton;
 
     private final WebDriver DRIVER;
 
     public LoginPage(WebDriver driver) {
+        PageFactory.initElements(Helper.getDriver(), this);
         this.DRIVER = driver;
         load();
     }
 
-    public void fillName(String name) {
-        clearAndType(this.name, name);
+    public void fillLoginForm(String email, String pass){
+        Utils.clearAndType(this.email, email);
+        Utils.clearAndType(this.pass, pass);
     }
 
-    public void fillPass(String pass) {
-        clearAndType(this.pass, pass);
+    public void clickButtonLogin(){
+        loginButton.click();
     }
 
-    public void fillPassRepeat(String passRepeat) {
-        clearAndType(this.passRepeat, passRepeat);
+    public WebElement getMessage() {
+        return message;
     }
 
-    public void fillAddress(String address) {
-        clearAndType(this.address, address);
-    }
-
-    public void fillPhone(String phone) {
-        clearAndType(this.phone, phone);
-    }
-
-    public void fillEmail(String email) {
-        clearAndType(this.email, email);
-    }
-
-    public void clearAndType(WebElement e, String value) {
-        e.clear();
-        e.sendKeys(value);
+    public void setMessage(WebElement message) {
+        this.message = message;
     }
 
     private void load() {
-    DRIVER.get("http://localhost:8080/imagebusiness/login");
+    DRIVER.get("http://localhost/fashion/dang-nhap");
 }
 }

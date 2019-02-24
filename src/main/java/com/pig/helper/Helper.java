@@ -3,12 +3,19 @@ package com.pig.helper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Helper {
+
+
+    private static final String PATH_TO_CHROME_DRIVER = "D:\\PigSelenium\\PigSelenium\\src\\main\\java\\com\\pig\\selenium\\chromedriver.exe";
+    public static final String PATH_TO_IE_DRIVER = "E:\\GIT\\selenium-test\\src\\main\\java\\SeleniumExe\\IEDriverServer.exe";
+
+    private static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
+    public static final String WEBDRIVER_IE_DRIVER = "webdriver.ie.driver";
 
     private static Helper instance;
     private static WebDriver driver;
@@ -21,35 +28,15 @@ public class Helper {
         return instance;
     }
 
+    /**
+     *  Set up driver WEBDRIVER_CHROME_DRIVER va` duong` dan~ cua no'
+     * @return
+     */
     public static WebDriver getDriver() {
-        if (driver == null) driver = new ChromeDriver();
-        return driver;
-    }
-
-    public String getConfig(String key) throws IOException {
-
-        InputStream inputStream = null;
-
-        if (null == this.prop) {
-            try {
-                prop = new Properties();
-
-                String propFileName = "input.properties";
-
-                inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
-                if (inputStream != null) {
-                    prop.load(inputStream);
-                } else {
-                    throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-                }
-
-            } catch (Exception e) {
-                System.out.println("Exception: " + e);
-            } finally {
-                inputStream.close();
-            }
+        if (driver == null) {
+            System.setProperty(WEBDRIVER_CHROME_DRIVER, PATH_TO_CHROME_DRIVER);
+            driver = new ChromeDriver();
         }
-        return String.valueOf(this.prop.get(key));
+        return driver;
     }
 }
