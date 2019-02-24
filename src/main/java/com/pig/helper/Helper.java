@@ -15,6 +15,7 @@ public class Helper {
     public static final String PATH_TO_IE_DRIVER = "E:\\GIT\\selenium-test\\src\\main\\java\\SeleniumExe\\IEDriverServer.exe";
 
     private static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
+
     public static final String WEBDRIVER_IE_DRIVER = "webdriver.ie.driver";
 
     private static Helper instance;
@@ -38,5 +39,39 @@ public class Helper {
             driver = new ChromeDriver();
         }
         return driver;
+
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(getInstance().getConfig("user.name"));
+    }
+
+    public String getConfig(String key) throws IOException {
+        return String.valueOf(this.getProp().get(key));
+    }
+
+    public Properties getProp() throws IOException {
+
+        InputStream inputStream = null;
+
+        if (null == this.prop) {
+            try {
+                prop = new Properties();
+
+                inputStream = new FileInputStream("E:\\GIT\\selenium-test\\src\\input.properties");
+
+                prop.load(inputStream);
+
+            } catch (Exception e) {
+                System.out.println("Exception: " + e);
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
+        }
+
+        return prop;
     }
 }
