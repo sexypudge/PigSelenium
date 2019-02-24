@@ -3,12 +3,19 @@ package com.pig.helper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Helper {
+
+
+    public static final String PATH_TO_CHROME_DRIVER = "E:\\GIT\\selenium-test\\src\\main\\java\\SeleniumExe\\chromedriver.exe";
+    public static final String PATH_TO_IE_DRIVER = "E:\\GIT\\selenium-test\\src\\main\\java\\SeleniumExe\\IEDriverServer.exe";
+
+    public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
+    public static final String WEBDRIVER_IE_DRIVER = "webdriver.ie.driver";
 
     private static Helper instance;
     private static WebDriver driver;
@@ -22,11 +29,23 @@ public class Helper {
     }
 
     public static WebDriver getDriver() {
-        if (driver == null) driver = new ChromeDriver();
+        if (driver == null) {
+            System.setProperty(WEBDRIVER_CHROME_DRIVER, PATH_TO_CHROME_DRIVER);
+            driver = new ChromeDriver();
+        }
         return driver;
     }
 
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(getInstance().getConfig("user.name"));
+    }
+
     public String getConfig(String key) throws IOException {
+        return String.valueOf(this.getProp().get(key));
+    }
+
+    public Properties getProp() throws IOException {
 
         InputStream inputStream = null;
 
@@ -34,22 +53,19 @@ public class Helper {
             try {
                 prop = new Properties();
 
-                String propFileName = "input.properties";
+                inputStream = new FileInputStream("E:\\GIT\\selenium-test\\src\\input.properties");
 
-                inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
-                if (inputStream != null) {
-                    prop.load(inputStream);
-                } else {
-                    throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-                }
+                prop.load(inputStream);
 
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
             } finally {
-                inputStream.close();
+                if (inputStream != null) {
+                    inputStream.close();
+                }
             }
         }
-        return String.valueOf(this.prop.get(key));
+
+        return prop;
     }
 }
